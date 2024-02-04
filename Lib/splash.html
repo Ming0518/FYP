@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Existing head content -->
+
+    <!-- Add a splash screen style -->
+    <style>
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #36a1d1 0%, #005480 100%); /* Gradient background */
+            color: #fff; /* Text color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .loading-text {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px; /* Adjust spacing */
+        }
+
+        .splash-image {
+            width: 100px; /* Set the width of your image */
+            height: auto; /* Maintain aspect ratio */
+            margin-top: 20px; /* Adjust spacing */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Add a splash screen div -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="loading-text">Searching the restaurant for you. Please wait for a second...</div>
+        <!-- Add an image above the text -->
+        <img class="splash-image" src="images/loading.gif" alt="Loading Image">
+    </div>
+
+    <!-- Existing body content -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Display the splash screen
+            document.getElementById('splashScreen').style.display = 'flex';
+
+            // Simulate a delay (you can replace this with actual search logic)
+            setTimeout(function () {
+                // Hide the splash screen
+                document.getElementById('splashScreen').style.display = 'none';
+
+                // Replace 'result.html' with the actual URL of your result page
+                window.location.href = 'result.html';
+            }, 3000); // 3000 milliseconds (3 seconds) delay for demonstration purposes
+        });
+    </script>
+
+    <!-- Existing script tags -->
+
+</body>
+
+</html>
