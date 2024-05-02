@@ -59,10 +59,15 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <style>
         /* Your CSS styles for the comments page */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa; /* Set the background color */
-            padding-top: 50px;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #9EB7E9; /* Change this color to your desired background color */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
         .container {
             max-width: 1200px;

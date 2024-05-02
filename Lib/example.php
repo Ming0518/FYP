@@ -77,7 +77,7 @@
 
                         <div class="navbar-collapse collapse" id="slide-navbar-collapse">
                             <ul class="navbar-nav light list-inline strong sf-menu">
-                                <li class="nav-item active">
+                                <!-- <li class="nav-item active">
                                     <a href="index.html" class="nav-link" data-effect="Home">HOME</a>
                                 </li>
                                 <li class="nav-item">
@@ -94,7 +94,7 @@
                                 <li class="nav-item">
                                     <a href="https://templatesjungle.gumroad.com/l/hungerhunt-free-responsive-html-css-template"
                                         target="_blank" class="nav-link" data-effect="Menu"> <b>PROFILE</b> </a>
-                                </li>
+                                </li> -->
                             </ul>
 
                         </div><!--navbar-collapse-->

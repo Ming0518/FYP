@@ -10,7 +10,7 @@ if (isset($_GET['delete_id'])) {
 }
 
 // Fetch all users from the database
-$stmt = $pdo->query("SELECT * FROM users");
+$stmt = $pdo->query("SELECT * FROM restaurants");
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -19,29 +19,24 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Comments - Food Hunter</title>
+    <title>Users Info - Food Hunter</title>
 
     <link rel="stylesheet" type="text/css" href="css/vendor.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" href="style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
     <script type="module"
         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule
         src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
     <!-- script ================================================== -->
     <script src="js/modernizr.js"></script>
     <style>
@@ -96,7 +91,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-color: #bd2130;
         }
 
-        
     </style>
 </head>
 
@@ -104,34 +98,32 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container mt-5">
         <div class="title-box">
-        <button class="btn btn-primary mb-3" onclick="window.location.href = 'admin.php'">Go Back</button>
-            <h1 class="text-center mb-4">Users Info</h1>        </div>
+            <button class="btn btn-primary mb-3" onclick="window.location.href = 'admin.php'">Go Back</button>
+            <h1 class="text-center mb-4">Restaurants Info</h1>
+        </div>
         <table class="table">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Bio</th>
-                    <th>Profile Pic</th>
-                    <th>Address</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($users as $key => $user) : ?>
+                <?php foreach ($users as $key => $user) : ?>
                     <tr>
-                        <td><?= $key + 1 ?></td>
-                        <td><?= $user['username'] ?></td>
-                        <td><?= $user['email'] ?></td>
-                        <td><?= $user['bio'] ?></td>
-                        <td><?= $user['pic'] ?></td>
-                        <td><?= $user['address'] ?></td>
+                        <td><?= $user['id'] ?></td>
+                        <td><?= $user['name'] ?></td>
+                        <td><?= $user['location'] ?></td>
+                        <td><?= $user['description'] ?></td>
                         <td>
                             <button class="btn btn-danger" onclick="confirmDelete(<?= $user['id'] ?>)">Delete</button>
                         </td>
                     </tr>
-                <?php endforeach; ?>            </tbody>
+                <?php endforeach; ?>
+            </tbody>
         </table>
     </div>
 
