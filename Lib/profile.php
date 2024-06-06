@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile - Food Hunter</title>
     <style>
@@ -25,6 +24,13 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        img.profile-pic {
+            border-radius: 50%;
+            margin-bottom: 20px;
+            cursor: pointer;
         }
 
         form {
@@ -61,16 +67,49 @@
             font-size: 16px;
         }
     </style>
-
-<script src="profile.js" defer></script>
-
 </head>
 
 <body>
 
     <div class="container">
         <h2>User Profile - Food Hunter</h2>
-        <form id="profileForm" method="post" action="fphp/update_profile.php">
+        <?php
+        session_start(); // Start the session if it's not already started
+
+        // Check if user ID is set in the session
+        if (isset($_SESSION['user_id'])) {
+            // Include the database connection file
+            require_once 'db_connection.php';
+
+            // Fetch user data including profile picture from the database
+            $profilePicPath = ''; // Default profile picture path
+            $profilePicName = ''; // Fetch profile picture name from the database
+
+            // Example query to fetch profile picture name using user ID from session
+            $stmt = $pdo->prepare("SELECT profile_pic FROM users WHERE id = ?");
+            $stmt->execute([$_SESSION['user_id']]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row) {
+                // Fetch profile picture name
+                $profilePicName = $row['profile_pic'];
+                $profilePicPath = 'images/' . $profilePicName; // Update with your actual path
+            } else {
+                // No profile picture available, use default path
+                $profilePicPath = 'images/food1.jpg'; // Update with your default picture path
+            }
+
+            // Close the database connection
+            $pdo = null;
+        } else {
+            // Redirect or handle the case where user ID is not set in the session
+            header('Location: login.php'); // Redirect to login page or another appropriate page
+            exit; // Terminate script execution
+        }
+        ?>
+
+        <img src="<?php echo $profilePicPath; ?>" alt="Profile Picture" class="profile-pic" width="150" height="150" id="profileImage" onclick="changeProfilePicture()">
+        <form id="profileForm" method="post" action="fphp/update_profile.php" enctype="multipart/form-data">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required disabled>
 
@@ -82,6 +121,8 @@
 
             <label for="bio">Bio:</label>
             <textarea id="bio" name="bio" placeholder="Write a brief bio about yourself"></textarea>
+
+            <input type="file" id="profilePictureInput" name="profilePicture" accept="image/*" style="display: none;">
 
             <button type="submit">Update Profile</button>
         </form>
@@ -110,9 +151,9 @@
 
                 // Submit the form data using fetch
                 fetch('fphp/update_profile.php', {
-                    method: 'POST',
-                    body: new FormData(this)
-                })
+                        method: 'POST',
+                        body: new FormData(this)
+                    })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -124,6 +165,10 @@
                     .catch(error => console.error('Error updating profile:', error));
             });
         });
+
+        function changeProfilePicture() {
+            document.getElementById('profilePictureInput').click();
+        }
     </script>
 
 </body>

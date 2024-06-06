@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 // Database connection parameters
 $hostname = 'localhost';
 $username = 'root';
@@ -12,31 +14,49 @@ try {
     // Check if the form was submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Validate and sanitize input
-        $restaurant_id = filter_input(INPUT_POST, 'restaurant_id', FILTER_SANITIZE_NUMBER_INT);
+        $restaurant_id = 1; // This should be dynamically set based on your application logic
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
 
-        // Prepare an insert statement
-        $sql = "INSERT INTO restaurant_comments (restaurant_id, name, email, comment) VALUES (:restaurant_id, :name, :email, :comment)";
-        $stmt = $pdo->prepare($sql);
+        // Retrieve the user ID from the session
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-        // Bind parameters
-        $stmt->bindParam(':restaurant_id', $restaurant_id);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':comment', $comment);
+        // Check if all required fields are not empty
+        if ($restaurant_id && $name && $email && $comment && $user_id) {
+            // Prepare an insert statement
+            $sql = "INSERT INTO restaurant_comments (restaurant_id, name, email, comment, user_id) VALUES (:restaurant_id, :name, :email, :comment, :user_id)";
+            $stmt = $pdo->prepare($sql);
 
-        // Execute the prepared statement
-        $stmt->execute();
+            // Bind parameters
+            $stmt->bindParam(':restaurant_id', $restaurant_id);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':comment', $comment);
+            $stmt->bindParam(':user_id', $user_id);
 
-        // Redirect to the same page with a success message
-        header("Location: " . $_SERVER['HTTP_REFERER'] . "?success=1");
-        exit;
+            // Execute the prepared statement
+            if ($stmt->execute()) {
+                // Set a session variable to indicate success
+                $_SESSION['comment_success'] = true;
+                // Redirect to the same page
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+            } else {
+                // Redirect back with error message
+                header("Location: " . $_SERVER['HTTP_REFERER'] . "?success=0");
+                exit;
+            }
+        } else {
+            // Redirect back with error message
+            header("Location: " . $_SERVER['HTTP_REFERER'] . "?success=0&error=missing_fields");
+            exit;
+        }
     }
 } catch (PDOException $e) {
-    // Redirect back with error message
-    header("Location: " . $_SERVER['HTTP_REFERER'] . "?success=0");
+    // Log error and redirect back with error message
+    error_log($e->getMessage());
+    header("Location: " . $_SERVER['HTTP_REFERER'] . "?success=0&error=database_error");
     exit;
 }
 ?>

@@ -58,7 +58,7 @@ session_start();
 
 						<div class="navbar-collapse collapse" id="slide-navbar-collapse">
 							<ul class="navbar-nav light list-inline strong sf-menu">
-								<!-- <li class="nav-item active">
+								<li class="nav-item active">
 									<a href="index.html" class="nav-link" data-effect="Home">HOME</a>
 								</li>
 								<li class="nav-item">
@@ -66,15 +66,15 @@ session_start();
 										data-effect="Reservation">RESTAURANTS</a>
 								</li>
 								<li class="nav-item">
-									<a href="menu.html" class="nav-link" data-effect="Menu">MENU</a>
+									<a href="friend.php" class="nav-link" data-effect="Menu">FRIENDS</a>
 								</li>
 								<li class="dropdown-submenu">
-									<a href="rate.html" data-effect="Blog" class="nav-link" class="dropdown-toggle">RATE & REVIEW</a>
+									<a href="rate.php" data-effect="Blog" class="nav-link" class="dropdown-toggle">RATE & REVIEW</a>
 				
 								</li>
 								<li class="nav-item">
 									<a href="profile.php" target="_blank" class="nav-link" data-effect="Menu"> <b>PROFILE</b>  </a>
-								</li> -->
+								</li>
 							</ul>
 
 						</div><!--navbar-collapse-->
@@ -92,9 +92,7 @@ session_start();
 							<a href="register.php">Register</a>
 						</button>
 						
-						<button class="btn btn-outline-light light hvr-sweep-to-right" id="profileLink" style="display: none;">
-							<a href="profile.php">Profile</a>
-						</button>
+						
 						
 						</button>
 
@@ -126,29 +124,18 @@ session_start();
 									<option value="none">Seafood</option>
 									<option value="none">Burger</option>
 									<option value="none">Sandwich</option>
-									<option value="none">Nasik</option>
+									<option value="none">Nasi</option>
 								</select>
 							</div>
 						</div>
 
-						<div class="form-group">
-							<div class="select">
-								<select>
-									<option value="none">Animal Friendly</option>
-									<option value="none">9:00 pm</option>
-									<option value="none">10:00 pm</option>
-									<option value="none">11:00 pm</option>
-									<option value="none">12:00 pm</option>
-								</select>
-							</div>
-						</div>
 
 						<div class="form-group no-border">
 							<div class="select">
 								<select>
 									<option value="none">WiFi Available</option>
 									<option value="none">Air conditioning</option>
-									<option value="none">WiFi Available</option>
+									<option value="none">Prayer Room</option>
 									<option value="none">Pets in the house</option>
 									<option value="none">Wheelchair accessible</option>
 								</select>
@@ -156,7 +143,7 @@ session_start();
 						</div>
 
 						<button class="button btn-effect" type="button" onclick="redirectToResultPage()" id="searchButton">
-						<a href="example.php">Search</a>
+						<a href="example.php" style="color: Yellow;">Search</a>
 
 						</button>
 

@@ -99,7 +99,7 @@
         <button type="submit" class="register-button">Register</button>
     </form>
     <div class="login-link">
-        Already signed up? <a href="login.html">Login Now</a>
+        Already signed up? <a href="login.php">Login Now</a>
     </div>
 </div>
 
