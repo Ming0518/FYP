@@ -146,7 +146,8 @@ $currentDate = date('Y-m-d');
                         <td><?php echo htmlspecialchars($reservation['people']); ?></td>
                         <td>
                             <?php if ($reservation['date'] <= $currentDate) : ?>
-                                <a href="comment.php?restaurants_id=<?php echo $reservation['restaurants_id']; ?>">Leave a Comment</a>                            <?php endif; ?>
+                                <a href="set_restaurant_session.php?restaurant_id=<?php echo htmlspecialchars($reservation['restaurant_id']); ?>">Leave a Comment</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -83,20 +83,27 @@
 
             // Fetch user data including profile picture from the database
             $profilePicPath = ''; // Default profile picture path
-            $profilePicName = ''; // Fetch profile picture name from the database
 
-            // Example query to fetch profile picture name using user ID from session
+            // Example query to fetch profile picture name and check if it's empty using user ID from session
             $stmt = $pdo->prepare("SELECT profile_pic FROM users WHERE id = ?");
             $stmt->execute([$_SESSION['user_id']]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($row) {
-                // Fetch profile picture name
-                $profilePicName = $row['profile_pic'];
-                $profilePicPath = 'images/' . $profilePicName; // Update with your actual path
+                // Check if profile picture field is not empty
+                if (!empty($row['profile_pic'])) {
+                    // Profile picture is not empty, set the profile picture path
+                    $profilePicName = $row['profile_pic'];
+                    $profilePicPath = 'images/user/' . $profilePicName; // Update with your actual path
+                } else {
+                    // Profile picture is empty, set default path
+                    $profilePicPath = 'images/user/ori.png'; // Update with your default picture path
+                }
             } else {
-                // No profile picture available, use default path
-                $profilePicPath = 'images/food1.jpg'; // Update with your default picture path
+                // User not found in the database, handle this case as needed
+                // For example, redirect to login page or display an error message
+                header('Location: login.php'); // Redirect to login page or another appropriate page
+                exit; // Terminate script execution
             }
 
             // Close the database connection
@@ -122,7 +129,7 @@
             <label for="bio">Bio:</label>
             <textarea id="bio" name="bio" placeholder="Write a brief bio about yourself"></textarea>
 
-            <input type="file" id="profilePictureInput" name="profilePicture" accept="image/*" style="display: none;">
+            <input type="file" id="profilePictureInput" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfilePicture(event)">
 
             <button type="submit">Update Profile</button>
         </form>
@@ -158,6 +165,8 @@
                     .then(data => {
                         if (data.success) {
                             alert('Profile updated successfully!'); // Show success alert
+                            location.reload();
+
                         } else {
                             alert('Error updating profile: ' + data.message); // Show error alert
                         }
@@ -168,6 +177,19 @@
 
         function changeProfilePicture() {
             document.getElementById('profilePictureInput').click();
+        }
+
+        function previewProfilePicture(event) {
+            const file = event.target.files[0]; // Get the selected file
+            const reader = new FileReader(); // Create a file reader object
+
+            // Set up the file reader onload function
+            reader.onload = function () {
+                document.getElementById('profileImage').src = reader.result; // Update the profile picture preview
+            };
+
+            // Read the selected file as a data URL (base64 encoded image)
+            reader.readAsDataURL(file);
         }
     </script>
 

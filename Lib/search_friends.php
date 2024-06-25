@@ -53,8 +53,8 @@ $conn->close();
 function calculateDistance($lat2, $lon2)
 {
     // Replace these values with user's current latitude and longitude
-    $lat1 = 6.128651;
-    $lon1 = 100.364565;
+    $lat1 = 3.13200;
+    $lon1 = 101.364565;
 
     // Calculate distance using Haversine formula or any other suitable method
     // Here's an example Haversine formula implementation

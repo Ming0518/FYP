@@ -39,7 +39,7 @@
 					<nav class="navbar navbar-expand-lg col-md-12">
 
 						<div class="navbar-brand">
-							<a href="index.html">
+							<a href="index.php">
 								<img src="images/logo.png">
 							</a>
 						</div>

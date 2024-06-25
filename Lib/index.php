@@ -45,7 +45,7 @@ session_start();
 					<nav class="navbar navbar-expand-lg col-md-12">
 
 						<div class="navbar-brand">
-							<a href="index.html">
+							<a href="index.php">
 								<img src="images/logo.png">
 							</a>
 						</div>
@@ -115,50 +115,34 @@ session_start();
 				</div>
 
 				<div class="search-bar">
-					<form class="search-form">
-						<div class="form-group">
-							<div class="select">
-								<select>
-									<option value="none">Sushi</option>
-									<option value="none">Dim sum</option>
-									<option value="none">Seafood</option>
-									<option value="none">Burger</option>
-									<option value="none">Sandwich</option>
-									<option value="none">Nasi</option>
-								</select>
-							</div>
-						</div>
+				<form class="search-form" method="get" action="result_store.php">
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <select id="location" name="location">
+            <option value="">Select Location</option>
+            <option value="Alor Setar City Center">Alor Setar City Center</option>
+			<option value="Taman Bandaraya">Taman Bandaraya</option>
+			<option value="Anak Bukit">Anak Bukit</option>
+            <option value="Taman Rakyat">Taman Rakyat</option>
+            <option value="Taman Saujana">Taman Saujana</option>
+            <!-- Add other locations -->
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">Select Category</option>
+            <option value="Pet-Friendly">Pet-Friendly</option>
+            <option value="Private Dining Rooms">Private Dining Rooms</option>
+			<option value="Live Music">Live Music</option>
+			<option value="Wheelchair Accessible">Wheelchair Accessible</option>
+            <option value="Outdoor Seating">Outdoor Seating</option>
+            <!-- Add other categories -->
+        </select>
+    </div>
+    <button type="submit" class="button btn-effect">Search</button>
+</form>
 
-
-						<div class="form-group no-border">
-							<div class="select">
-								<select>
-									<option value="none">WiFi Available</option>
-									<option value="none">Air conditioning</option>
-									<option value="none">Prayer Room</option>
-									<option value="none">Pets in the house</option>
-									<option value="none">Wheelchair accessible</option>
-								</select>
-							</div>
-						</div>
-
-						<button class="button btn-effect" type="button" onclick="redirectToResultPage()" id="searchButton">
-						<a href="example.php" style="color: Yellow;">Search</a>
-
-						</button>
-
-						<script>
-							function redirectToResultPage() {
-    // Get selected preferences
-    var restaurantPreference = document.getElementById('restaurantPreference').value;
-    var foodType = document.getElementById('foodType').value;
-    var otherOptions = document.getElementById('otherOptions').value;
-
-    // Redirect to result page with selected preferences as query parameters
-    window.location.href = 'result.php?restaurant=' + restaurantPreference + '&food=' + foodType + '&options=' + otherOptions;
-}
-
-						</script>					</form>
 
 				</div>
 

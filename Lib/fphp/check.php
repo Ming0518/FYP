@@ -25,7 +25,10 @@ try {
         // Login successful, set session variables
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
-        
+        $_SESSION['latitude'] = $user['latitude'];
+        $_SESSION['longitude'] = $user['longitude'];
+        $_SESSION['email'] = $user['email'];
+
         // Check if the username is "admin"
         if ($entered_username === 'admin') {
             // If it is, return success with the username
