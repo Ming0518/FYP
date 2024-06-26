@@ -96,7 +96,7 @@ if (isset($_SESSION['comment_success'])) {
     <div class="container">
         <div class="content">
             <div class="copyright">
-                <p>© 2024 - FOOD HUNTER</p>
+                <p>© 2024 - FOOD HUNTER Hello</p>
             </div>
             <div class="payment-card">
                 <img src="images/visa.png" class="cardImg">

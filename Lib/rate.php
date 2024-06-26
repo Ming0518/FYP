@@ -125,6 +125,9 @@ $currentDate = date('Y-m-d');
 </head>
 
 <body>
+<div class="back-button">
+    <button onclick="window.location.href='history.php'" class="custom-button">View Comment History</button>
+</div>
     <div class="container">
         <h2>Rate & Review</h2>
         <table>

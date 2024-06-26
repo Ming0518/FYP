@@ -53,10 +53,10 @@
 						<div class="navbar-collapse collapse" id="slide-navbar-collapse">
 							<ul class="navbar-nav light list-inline strong sf-menu">
 								<li class="nav-item active">
-									<a href="index.html" class="nav-link" data-effect="Home">HOME</a>
+									<a href="index.php" class="nav-link" data-effect="Home">HOME</a>
 								</li>
 								<li class="nav-item">
-									<a href="reservation.html" class="nav-link"
+									<a href="ublog.php" class="nav-link"
 										data-effect="Reservation">RESTAURANTS</a>
 								</li>
 								<li class="nav-item">
@@ -141,91 +141,88 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-
     <script>
-        function searchFriends() {
+    function searchFriends() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const results = document.getElementById('results');
+        results.innerHTML = '';
 
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const results = document.getElementById('results');
-    results.innerHTML = '';
-
-    fetch('search_friends.php?query=' + searchInput)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-    console.log(data); // Add this line to log the data to the console
-    if ( data.length === 0) {
-        results.innerHTML = '<p>No results found.</p>';
-    } else {
-        data.users.forEach(user => { // Assuming 'users' is the key containing the array in your JSON response
-            const div = document.createElement('div');
-            div.className = 'result-item';
-            div.innerHTML = `
-            <a href="profile.php?username=${user.username}" onclick="goToProfile(event)">${user.username}</a>
-                <span class="distance">Distance: ${user.distance.toFixed(2)} km</span>
-                <button class="btn btn-success ml-3" onclick="addFriend(${user.id})">Add Friend</button>
-            `;
-            results.appendChild(div);
-        });
-    }
-})
-
-        .catch(error => {
-            console.error('Error fetching search results:', error);
-            results.innerHTML = '<p>Error fetching search results.</p>';
-        });
-}
-
-function goToProfile(event) {
-    event.preventDefault(); // Prevent default anchor behavior (page reload)
-    const username = event.target.textContent; // Get the clicked username
-    window.location.href = `splash.php`; // Redirect to profile page
-}
-        function addFriend(id) {
-            fetch('add_friend.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: id })
+        fetch('search_friends.php?query=' + searchInput)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
             })
-            .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    alert('Friend added successfully!');
-                    updateFriendList();
+                console.log(data); // Log the data to the console
+                if (data.length === 0) {
+                    results.innerHTML = '<p>No results found.</p>';
                 } else {
-                    alert('Error adding friend.');
+                    data.users.forEach(user => { // Assuming 'users' is the key containing the array in your JSON response
+                        const div = document.createElement('div');
+                        div.className = 'result-item';
+                        div.innerHTML = `
+                            <a href="splash.php?id=${user.id}" onclick="goToProfile(event, ${user.id})">${user.username}</a>
+                            <span class="distance">Distance: ${user.distance.toFixed(2)} km</span>
+                            <button class="btn btn-success ml-3" onclick="addFriend(${user.id})">Add Friend</button>
+                        `;
+                        results.appendChild(div);
+                    });
                 }
             })
             .catch(error => {
-                console.error('Error adding friend:', error);
-                alert('Error adding friend.');
+                console.error('Error fetching search results:', error);
+                results.innerHTML = '<p>Error fetching search results.</p>';
             });
-        }
+    }
 
-        function updateFriendList() {
-            fetch('get_friends.php')
-                .then(response => response.json())
-                .then(data => {
-                    const friendList = document.getElementById('friendList');
-                    friendList.innerHTML = '';
+    function goToProfile(event, userId) {
+        event.preventDefault(); // Prevent default anchor behavior (page reload)
+        window.location.href = `splash.php?id=${userId}`; // Redirect to profile page with user ID
+    }
 
-                    data.forEach(friend => {
-                        const div = document.createElement('div');
-                        div.className = 'friend-item';
-                        div.innerText = friend.name;
-                        friendList.appendChild(div);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching friend list:', error);
+    function addFriend(id) {
+        fetch('add_friend.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Friend added successfully!');
+                updateFriendList();
+            } else {
+                alert('Error adding friend.');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding friend:', error);
+            alert('Error adding friend.');
+        });
+    }
+
+    function updateFriendList() {
+        fetch('get_friends.php')
+            .then(response => response.json())
+            .then(data => {
+                const friendList = document.getElementById('friendList');
+                friendList.innerHTML = '';
+
+                data.forEach(friend => {
+                    const div = document.createElement('div');
+                    div.className = 'friend-item';
+                    div.innerText = friend.name;
+                    friendList.appendChild(div);
                 });
-        }
-    </script>
+            })
+            .catch(error => {
+                console.error('Error fetching friend list:', error);
+            });
+    }
+</script>
 </body>
 </html>

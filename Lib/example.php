@@ -107,7 +107,7 @@ echo '</pre>';
             <div class="row">
                 <nav class="navbar navbar-expand-lg col-md-12">
                     <div class="navbar-brand">
-                        <a href="index.html">
+                        <a href="index.php">
                             <img src="images/logo.png">
                         </a>
                     </div>
@@ -119,10 +119,10 @@ echo '</pre>';
                     <div class="navbar-collapse collapse" id="slide-navbar-collapse">
                         <ul class="navbar-nav light list-inline strong sf-menu">
                             <li class="nav-item active">
-                                <a href="index.html" class="nav-link" data-effect="Home">HOME</a>
+                                <a href="index.php" class="nav-link" data-effect="Home">HOME</a>
                             </li>
                             <li class="nav-item">
-                                <a href="reservation.html" class="nav-link"
+                                <a href="ublog.php" class="nav-link"
                                     data-effect="Reservation">RESTAURANTS</a>
                             </li>
                             <li class="nav-item">

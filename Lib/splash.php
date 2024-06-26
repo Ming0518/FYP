@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +22,30 @@
 	<!--link to the JavaScript files (hoverIntent is optional)-->
 	<script src="superfish/js/hoverIntent.js"></script>
 	<script src="superfish/js/superfish.js"></script>
-
+	<style>
+        /* Custom styles for the Comments History section */
+        .comments-history {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .comment-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        .comment-item p {
+            margin-bottom: 5px;
+        }
+        .comment-item .meta {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
  
@@ -34,7 +56,7 @@
 					<nav class="navbar navbar-expand-lg col-md-12">
 
 						<div class="navbar-brand">
-							<a href="index.html">
+							<a href="index.php">
 								<img src="images/logo.png">
 							</a>
 						</div>
@@ -48,10 +70,10 @@
 						<div class="navbar-collapse collapse" id="slide-navbar-collapse">
 							<ul class="navbar-nav light list-inline strong sf-menu">
 								<li class="nav-item active">
-									<a href="index.html" class="nav-link" data-effect="Home">HOME</a>
+									<a href="index.php" class="nav-link" data-effect="Home">HOME</a>
 								</li>
 								<li class="nav-item">
-									<a href="reservation.html" class="nav-link"
+									<a href="ublog.php" class="nav-link"
 										data-effect="Reservation">RESTAURANTS</a>
 								</li>
 								<li class="nav-item">
@@ -97,102 +119,74 @@
 	<div class="row">
 	<div id="main-content" class="col-md-8">
 		<div class="row">
-		<div class="post-item mb-5">
-			<figure>
-				<a href="single-blog.html"> <img src="images/chickrice.png" alt="food3" class="postImg"> </a>
-			</figure>
-			<div class="post-content">
-				<h2 class="post-title"><a href="single-blog.html">we love it when you love it</a></h2>
-				<!-- <div class="meta-tags">
-					<em class="meta-date">March 30, 2018</em>
-					<em class="meta-author">by<a href="#"> Gustave Berneit</a></em>
-					<em class="meta-comment"><a href="#">2</a> comments</em>
-				</div> -->
-				<p>How did the hand pies look? Did you love the brownies? How many choux did you eat in one sitting? After  a gorgeous selection of our favorites for a client to send as a new year’s gift.</p>
-			</div>
+		<?php
+                                $servername = "localhost";
+                                $username = "root";
+                                $password = "";
+                                $dbname = "foodhunter";
+                                $user_id = $_GET['id'];
 
-			<!-- <div class="d-flex justify-content-between dark">
-				<div class="pix_btn">
-					<a href="single-blog.html" class="button btn-effect">Read More</a>
-				</div>
-				<div class="social-icon">
-					<ul class="list-unstyled d-flex">
-						<li class="pl-3"><a href="#"><i class="icon icon-facebook"></i></a></li>
-						<li class="pl-3"><a href="#"><i class="icon icon-twitter"></i></a></li>
-						<li class="pl-3"><a href="#"><i class="icon icon-instagram"></i></a></li>
-					</ul>
-				</div>
-			</div> -->
+                                // Create connection
+                                $conn = new mysqli($servername, $username, $password, $dbname);
 
+                                // Check connection
+                                if ($conn->connect_error) {
+                                    die("Connection failed: " . $conn->connect_error);
+                                }
+
+                                // Fetch and display blog posts
+                                $sql_blog = "SELECT picture, title, description FROM blog WHERE user_id = $user_id";
+                                $result_blog = $conn->query($sql_blog);
+
+                                if ($result_blog->num_rows > 0) {
+                                    while($row = $result_blog->fetch_assoc()) {
+                                        echo '<div class="post-item mb-5">';
+                                        echo '<figure>';
+                                        echo '<img src="images/blog/' . $row["picture"] . '" alt="' . $row["title"] . '" class="postImg">';
+                                        echo '</figure>';
+                                        echo '<div class="post-content">';
+                                        echo '<h2 class="post-title">' . $row["title"] . '</h2>';
+                                        echo '<p>' . $row["description"] . '</p>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                    }
+                                } else {
+                                    echo "No blog posts found for this user.";
+                                }
+
+                                // Fetch and display comments
+                                $sql_comments = "SELECT rc.comment, rc.created_at, r.name as restaurant_name 
+                                                 FROM restaurant_comments rc 
+                                                 JOIN restaurants r ON rc.restaurant_id = r.id 
+                                                 WHERE rc.user_id = $user_id 
+                                                 ORDER BY rc.created_at DESC";
+                                $result_comments = $conn->query($sql_comments);
+
+                                if ($result_comments->num_rows > 0) {
+                                    echo '<div class="comments-history">';
+                                    echo '<h3>Comments History</h3>';
+                                    while($row = $result_comments->fetch_assoc()) {
+                                        echo '<div class="comment-item">';
+                                        echo '<p>' . $row["comment"] . '</p>';
+                                        echo '<div class="meta">Restaurant: ' . $row["restaurant_name"] . ' | Posted on: ' . $row["created_at"] . '</div>';
+                                        echo '</div>';
+                                    }
+                                    echo '</div>';
+                                } else {
+                                    echo '<div class="comments-history">';
+                                    echo '<h3>Comments History</h3>';
+                                    echo '<p>No comments found.</p>';
+                                    echo '</div>';
+                                }
+
+                                // Close connection
+                                $conn->close();
+                            ?>
 		</div>
-
-		<div class="post-item mb-5">
-			<figure>
-				<a href="single-blog.html"> <img src="images/bread.jpg" alt="food3" class="postImg"> </a>
-			</figure>
-
-			<div class="post-content">
-				<h2 class="post-title"><a href="single-blog.html">we love it make the special breads</a></h2>
-				<!-- <div class="meta-tags">
-					<em class="meta-date">March 30, 2018</em>
-					<em class="meta-author">by<a href="#"> Gustave Berneit</a></em>
-					<em class="meta-comment"><a href="#">2</a> comments</em>
-				</div> -->
-				<p>Did you love the brownies? How many choux did you eat in one sitting? After  a gorgeous selection of our favorites for a client to send as a new year’s gift.</p>
-			</div>
-
-			<!-- <div class="d-flex justify-content-between dark">
-				<div class="pix_btn">
-					<a href="single-blog.html" class="button btn-effect">Read More</a>
-				</div>
-				<div class="social-icon">
-					<ul class="list-unstyled d-flex">
-						<li class="pl-3"><a href="#"><i class="icon icon-facebook"></i></a></li>
-						<li class="pl-3"><a href="#"><i class="icon icon-twitter"></i></a></li>
-						<li class="pl-3"><a href="#"><i class="icon icon-instagram"></i></a></li>
-					</ul>
-				</div>
-			</div> -->
-
-		</div>
-
-		<div class="post-item mb-5">
-			<figure>
-				<a href="single-blog.html"> <img src="images/char.jpg" alt="cocktails" class="postImg"> </a>
-			</figure>
-			<div class="post-content">
-				<h2 class="post-title"><a href="single-blog.html">Penand Kuey Teow</a></h2>
-				<!-- <div class="meta-tags">
-					<em class="meta-date">April 5, 2019</em>
-					<em class="meta-author">by<a href="#"> Harry Jones</a></em>
-					<em class="meta-comment"><a href="#">2</a> comments</em>
-				</div> -->
-				<p>Did you love the brownies? How many choux did you eat in one sitting? After  a gorgeous selection of our favorites for a client to send as a new year’s gift.</p>
-			</div>
-
-			<!-- <div class="d-flex justify-content-between dark">
-				<div class="pix_btn">
-					<a href="single-blog.html" class="button btn-effect">Read More</a>
-				</div>
-				<div class="social-icon">
-					<ul class="list-unstyled d-flex">
-						<li class="pl-3"><a href="#"><i class="icon icon-facebook"></i></a></li>
-						<li class="pl-3"><a href="#"><i class="icon icon-twitter"></i></a></li>
-						<li class="pl-3"><a href="#"><i class="icon icon-instagram"></i></a></li>
-					</ul>
-				</div>
-			</div> -->
-		</div>
-		</div>
-	
 	</div><!--main-content-->
 
 	<div class="right-sidebar col-md-3">
 		<div class="row">
-
-	
-
-		
 
 		<div class="recent-post-box sidebar-box">
 			<h3>favourite meals</h3>
@@ -263,9 +257,6 @@
 
 		</div><!--.recent-post-box-->
 
-
-		
-
 		<div class="post-tags-box sidebar-box">
 			<h3>tags</h3>
 			<div class="sidebar-tags color-secondary">
@@ -287,6 +278,7 @@
 </section>
 
 
+
 	<div class="footer-bottom">
 		<div class="container">
 			<div class="content">
@@ -301,7 +293,6 @@
 			</div>
 		</div>
 	</div>
-
 
  </div>
 
