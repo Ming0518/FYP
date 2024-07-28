@@ -17,7 +17,7 @@ try {
 // Define the restaurant ID (replace this with the appropriate restaurant ID)
 $restaurant_id = $_SESSION['matching_restaurant'];
 
-// Prepare SQL query to fetch restaurant name and location
+// Prepare SQL query to fetch restaurant details
 $stmt = $pdo->prepare("SELECT name, location, description, image_path FROM restaurants WHERE id = :id");
 $stmt->bindParam(':id', $restaurant_id, PDO::PARAM_INT);
 $stmt->execute();
@@ -57,13 +57,6 @@ $user_lat = $_SESSION['latitude'] ?? null;
 $user_lon = $_SESSION['longitude'] ?? null;
 $session_user_id = $_SESSION['user_id'] ?? null;
 ?>
-<?php
-session_start();
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,9 +66,6 @@ echo '</pre>';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="fonts/icomoon/icomoon.css">
@@ -173,53 +163,15 @@ echo '</pre>';
             <div class="row ">
                 <div class="section-image col-md-7">
                     <?php
-                    // Database connection parameters
-                    $hostname = 'localhost';
-                    $username = 'root';
-                    $password = '';
-                    $database = 'foodhunter';
-
-                    // Create a PDO connection
-                    try {
-                        $pdo = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
-                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    } catch (PDOException $e) {
-                        die("Error: Could not connect. " . $e->getMessage());
-                    }
-
-                    // Define the restaurant ID (replace this with the appropriate restaurant ID)
-                    $restaurant_id = $_SESSION['matching_restaurant'];
-
-                    // Prepare SQL query to fetch restaurant name, location, description, and image path
-                    $stmt = $pdo->prepare("SELECT name, location, description, image_path FROM restaurants WHERE id = :id");
-
-                    // Bind parameters
-                    $stmt->bindParam(':id', $restaurant_id, PDO::PARAM_INT);
-
-                    // Execute the query
-                    $stmt->execute();
-
-                    // Fetch the restaurant details
-                    $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    // Extract the name, location, description, and image path
-                    $name = $restaurant['name'];
-                    $location = $restaurant['location'];
-                    $description = $restaurant['description'];
-                    $imagePath = $restaurant['image_path'];
-
                     // Display the restaurant image
-                    echo "<img src='images/restaurants/$imagePath' class='introImg'>";
-
-                    // Close the database connection
-                    $pdo = null;
+                    echo "<img src='images/restaurants/$imagePath' class='introImg' alt='$name'>";
                     ?>
                 </div>
 
                 <div class="text-content text-center heading dark col-md-5">
                     <?php
                     // Display the restaurant details
-                    echo "<h2 class='section-title'><strong>$name</strong>$location</h2>";
+                    echo "<h2 class='section-title'><strong>$name</strong> $location</h2>";
                     echo "<div class='divider dark mb-4'>";
                     echo "<div class='icon-wrap'><i class='icon icon-spoon'></i></div>";
                     echo "</div>";
@@ -241,11 +193,10 @@ echo '</pre>';
             <div class="box-wrap slider">
                 <?php
                 foreach ($meals as $meal) {
+                    $mealImg = file_exists("images/{$meal['img']}") ? $meal['img'] : 'default_food.jpg';
                     echo '<div class="col-md-4 row-cols-sm-1 box">';
                     echo '<figure>';
-                    echo '<a href="#">';
-                    echo "<img src='images/{$meal['img']}' alt='{$meal['name']}'>";
-                    echo '</a>';
+                    echo "<a href='#'><img src='images/{$mealImg}' alt='{$meal['name']}'></a>";
                     echo '</figure>';
                     echo '<div class="text-content text-align">';
                     echo '<div class="content">';

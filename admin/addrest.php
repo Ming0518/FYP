@@ -20,12 +20,13 @@ if (isset($_POST['add_restaurant'])) {
     $name = $_POST['restaurant_name'];
     $location = $_POST['restaurant_location'];
     $description = $_POST['restaurant_description'];
+    $category = $_POST['restaurant_category'];
 
     // Perform validation if needed
 
     // Insert data into the restaurant table
-    $stmt = $pdo->prepare("INSERT INTO restaurants (name, location, description) VALUES (?, ?, ?)");
-    $stmt->execute([$name, $location, $description]);
+    $stmt = $pdo->prepare("INSERT INTO restaurants (name, location, category, description) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$name, $location, $category, $description]);
 
     // Set the success message
     $success_message = "Restaurant added successfully.";
@@ -165,13 +166,31 @@ if (isset($_POST['add_meal'])) {
                 <input type="text" id="restaurant_name" name="restaurant_name" required>
             </div>
             <div class="mb-3">
-                <label for="restaurant_location" class="form-label">Location:</label>
-                <input type="text" id="restaurant_location" name="restaurant_location" required>
-            </div>
-            <div class="mb-3">
                 <label for="restaurant_description" class="form-label">Description:</label>
                 <textarea id="restaurant_description" name="restaurant_description" rows="4" required></textarea>
             </div>
+            <div class="mb-3">
+    <label for="restaurant_location" class="form-label">Location:</label>
+    <select id="restaurant_location" name="restaurant_location" required>
+        <option value="">Select Location</option>
+        <option value="Alor Setar City Center">Alor Setar City Center</option>
+        <option value="Taman Bandaraya">Taman Bandaraya</option>
+        <option value="Anak Bukit">Anak Bukit</option>
+        <option value="Taman Rakyat">Taman Rakyat</option>
+        <option value="Taman Saujana">Taman Saujana</option>
+    </select>
+</div>
+<div class="mb-3">
+    <label for="restaurant_category" class="form-label">Category:</label>
+    <select id="restaurant_category" name="restaurant_category" required>
+        <option value="">Select Category</option>
+        <option value="Pet-Friendly">Pet-Friendly</option>
+        <option value="Private Dining Rooms">Private Dining Rooms</option>
+        <option value="Live Music">Live Music</option>
+        <option value="Wheelchair Accessible">Wheelchair Accessible</option>
+        <option value="Outdoor Seating">Outdoor Seating</option>
+    </select>
+</div>
             <!-- Submit button for adding a restaurant -->
             <button type="submit" name="add_restaurant" class="btn btn-primary">Add Restaurant</button>
         </form>

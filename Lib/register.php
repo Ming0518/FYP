@@ -78,8 +78,22 @@
             text-decoration: underline;
         }
     </style>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById("longitude").value = position.coords.longitude;
+            document.getElementById("latitude").value = position.coords.latitude;
+        }
+    </script>
 </head>
-<body>
+<body onload="getLocation()">
 
 <div class="register-container">
     <h2>Register</h2>
@@ -96,12 +110,25 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
+        <input type="hidden" id="longitude" name="longitude">
+        <input type="hidden" id="latitude" name="latitude">
         <button type="submit" class="register-button">Register</button>
     </form>
     <div class="login-link">
         Already signed up? <a href="login.php">Login Now</a>
     </div>
 </div>
+
+<?php
+// Check if registration was successful
+if (isset($_SESSION['register_success'])) {
+    echo "<script>
+        alert('Registration successful!');
+        window.location.href = 'login.php';
+    </script>";
+    unset($_SESSION['register_success']);
+}
+?>
 
 </body>
 </html>

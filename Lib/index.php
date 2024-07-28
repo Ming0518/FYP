@@ -58,6 +58,9 @@ session_start();
                                 <li class="nav-item">
                                     <a href="profile.php" target="_blank" class="nav-link" data-effect="Menu"> <b>PROFILE</b>  </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="search.php" target="_blank" class="nav-link" data-effect="Menu"> <b>SEARCH</b>  </a>
+                                </li>
                             </ul>
                         </div>
                         <button class="btn btn-outline-light light hvr-sweep-to-right" id="loginButton" onclick="login()">

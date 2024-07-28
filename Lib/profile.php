@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/master-chef.jpg'); /* Replace with the actual image path */
+            background-image: url('images/master-chef.jpg');
             background-size: cover;
             background-position: center;
             margin: 0;
@@ -20,7 +20,7 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background to improve text visibility */
+            background: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -43,14 +43,7 @@
             margin-bottom: 8px;
         }
 
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
-
-        textarea {
+        input, textarea {
             width: 100%;
             padding: 8px;
             margin-bottom: 16px;
@@ -74,44 +67,27 @@
     <div class="container">
         <h2>User Profile - Food Hunter</h2>
         <?php
-        session_start(); // Start the session if it's not already started
+        session_start();
 
-        // Check if user ID is set in the session
         if (isset($_SESSION['user_id'])) {
-            // Include the database connection file
             require_once 'db_connection.php';
 
-            // Fetch user data including profile picture from the database
-            $profilePicPath = ''; // Default profile picture path
-
-            // Example query to fetch profile picture name and check if it's empty using user ID from session
+            $profilePicPath = '';
             $stmt = $pdo->prepare("SELECT profile_pic FROM users WHERE id = ?");
             $stmt->execute([$_SESSION['user_id']]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($row) {
-                // Check if profile picture field is not empty
-                if (!empty($row['profile_pic'])) {
-                    // Profile picture is not empty, set the profile picture path
-                    $profilePicName = $row['profile_pic'];
-                    $profilePicPath = 'images/user/' . $profilePicName; // Update with your actual path
-                } else {
-                    // Profile picture is empty, set default path
-                    $profilePicPath = 'images/user/ori.png'; // Update with your default picture path
-                }
+                $profilePicPath = !empty($row['profile_pic']) ? 'images/user/' . $row['profile_pic'] : 'images/user/default.png';
             } else {
-                // User not found in the database, handle this case as needed
-                // For example, redirect to login page or display an error message
-                header('Location: login.php'); // Redirect to login page or another appropriate page
-                exit; // Terminate script execution
+                header('Location: login.php');
+                exit;
             }
 
-            // Close the database connection
             $pdo = null;
         } else {
-            // Redirect or handle the case where user ID is not set in the session
-            header('Location: login.php'); // Redirect to login page or another appropriate page
-            exit; // Terminate script execution
+            header('Location: login.php');
+            exit;
         }
         ?>
 
@@ -129,6 +105,12 @@
             <label for="bio">Bio:</label>
             <textarea id="bio" name="bio" placeholder="Write a brief bio about yourself"></textarea>
 
+            <label for="longitude">Longitude:</label>
+            <input type="text" id="longitude" name="longitude" placeholder="Enter your longitude">
+
+            <label for="latitude">Latitude:</label>
+            <input type="text" id="latitude" name="latitude" placeholder="Enter your latitude">
+
             <input type="file" id="profilePictureInput" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfilePicture(event)">
 
             <button type="submit">Update Profile</button>
@@ -137,26 +119,21 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Fetch user data from the server
             fetch('fetch_user.php')
                 .then(response => response.json())
                 .then(data => {
-                    // Populate form fields with user data
                     document.getElementById('username').value = data.username;
                     document.getElementById('email').value = data.email;
-                    document.getElementById('address').value = data.address; // Populate address
-                    document.getElementById('bio').value = data.bio; // Populate bio
-                    // Disable username and email fields
-                    document.getElementById('username').disabled = true;
-                    document.getElementById('email').disabled = true;
+                    document.getElementById('address').value = data.address;
+                    document.getElementById('bio').value = data.bio;
+                    document.getElementById('longitude').value = data.longitude;
+                    document.getElementById('latitude').value = data.latitude;
                 })
                 .catch(error => console.error('Error fetching user data:', error));
 
-            // Listen for form submission
             document.getElementById('profileForm').addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent the form from submitting normally
+                event.preventDefault();
 
-                // Submit the form data using fetch
                 fetch('fphp/update_profile.php', {
                         method: 'POST',
                         body: new FormData(this)
@@ -164,11 +141,10 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Profile updated successfully!'); // Show success alert
+                            alert('Profile updated successfully!');
                             location.reload();
-
                         } else {
-                            alert('Error updating profile: ' + data.message); // Show error alert
+                            alert('Error updating profile: ' + data.message);
                         }
                     })
                     .catch(error => console.error('Error updating profile:', error));
@@ -180,15 +156,13 @@
         }
 
         function previewProfilePicture(event) {
-            const file = event.target.files[0]; // Get the selected file
-            const reader = new FileReader(); // Create a file reader object
+            const file = event.target.files[0];
+            const reader = new FileReader();
 
-            // Set up the file reader onload function
             reader.onload = function () {
-                document.getElementById('profileImage').src = reader.result; // Update the profile picture preview
+                document.getElementById('profileImage').src = reader.result;
             };
 
-            // Read the selected file as a data URL (base64 encoded image)
             reader.readAsDataURL(file);
         }
     </script>

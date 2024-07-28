@@ -4,7 +4,6 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="04f07f83-b8f5-4869-96dc-f222dcbbdc83";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
     <title>Hunger Hunter - Free Restaurant HTML CSS Template</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,6 +41,10 @@ session_start();
             font-size: 12px;
             color: #666;
         }
+
+        .post-content .btn {
+            display: inline-block; /* Ensure buttons are always visible */
+        }
     </style>
     <script>
         function confirmDelete(postId) {
@@ -49,6 +52,11 @@ session_start();
                 window.location.href = "delete_post.php?id=" + postId;
             }
         }
+        function confirmfavDelete(mealId) {
+        if (confirm("Are you sure you want to delete this meal?")) {
+            window.location.href = "delete_favorite_meal.php?id=" + mealId;
+        }
+    }
     </script>
 </head>
 <body>
@@ -107,6 +115,7 @@ session_start();
     <div id="main-content" class="col-md-8">
         <div class="row">
         <?php
+        
 
 $servername = "localhost";
 $username = "root";
@@ -141,7 +150,7 @@ if ($result_blog->num_rows > 0) {
         echo '<div class="post-content">';
         echo '<h2 class="post-title">' . $row["title"] . '</h2>';
         echo '<p>' . $row["description"] . '</p>';
-        echo '<a href="edit_post.php?id=' . $row["id"] . '" class="btn btn-secondary">Edit</a>';
+        echo '<a href="edit_post.php?id=' . $row["id"] . '" class="btn btn-success">Edit</a>';
         echo '<button onclick="confirmDelete(' . $row["id"] . ')" class="btn btn-danger">Delete</button>';
         echo '</div>';
         echo '</div>';
@@ -181,65 +190,57 @@ $conn->close();
         </div>
     </div>
     <div class="right-sidebar col-md-3">
-        <div class="row">
+    <div class="row">
         <div class="recent-post-box sidebar-box">
-            <h3>favourite meals</h3>
-            <div class="content d-flex mb-3">
-                <div class="post-image">
-                    <img src="images/Tom_yam.jpg" class="rpImg">
-                </div>
-                <div class="text-block color-secondary">
-                <a href="#">Tom Yam Sup</a>
-                <span class="date">
-                    RM 10
-                </span>
-                </div>
-            </div>
-            <div class="content d-flex mb-3">
-                <div class="post-image">
-                    <img src="images/chicken.jpg" class="rpImg">
-                </div>
-                <div class="text-block color-secondary">
-                <a href="#">Salmon</a>
-                <span class="date">
-                    RM 30
-                </span>
-                </div>
-            </div>
-            <div class="content d-flex mb-3">
-                <div class="post-image">
-                    <img src="images/thai.jfif" class="rpImg">
-                </div>
-                <div class="text-block color-secondary">
-                <a href="#">Nasi Goreng Thai</a>
-                <span class="date">
-                    RM 6
-                </span>
-                </div>
-            </div>
-            <div class="content d-flex mb-3">
-                <div class="post-image">
-                    <img src="images/chilly.jpg" class="rpImg">
-                </div>
-                <div class="text-block color-secondary">
-                <a href="#">Pizza</a>
-                <span class="date">
-                    RM 20
-                </span>
-                </div>
-            </div>
-            <div class="content d-flex">
-                <div class="post-image">
-                    <img src="images/char.jpg" class="rpImg">
-                </div>
-                <div class="text-block color-secondary">
-                <a href="#">Kuey Teow</a>
-                <span class="date">
-                    RM 4
-                </span>
-                </div>
-            </div>
+            <h3>Favorite Meals</h3>
+            <?php
+            // Database connection parameters
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "foodhunter";
+            $user_id = $_SESSION['user_id'];
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Fetch favorite meals
+            $sql = "SELECT id, name, price, image FROM favorite_meals WHERE user_id = $user_id";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    echo '<div class="content d-flex mb-3">';
+                    echo '<div class="post-image">';
+                    echo '<img src="images/' . $row["image"] . '" class="rpImg">';
+                    echo '</div>';
+                    echo '<div class="text-block color-secondary">';
+                    echo '<a href="#">' . $row["name"] . '</a>';
+                    echo '<span class="date">RM ' . $row["price"] . '</span>';
+                    echo '<div class="mt-2">';
+                    echo '<a href="edit_favorite_meal.php?id=' . $row["id"] . '" class="btn btn-sm btn-primary mr-2">Edit</a>';
+                    echo '<button onclick="confirmfavDelete(' . $row["id"] . ')" class="btn btn-sm btn-danger">Delete</button>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<p>No favorite meals found.</p>';
+            }
+
+            // Close connection
+            $conn->close();
+            ?>
         </div>
+    </div>
+</div>
+
+
         <div class="post-tags-box sidebar-box">
             <h3>tags</h3>
             <div class="sidebar-tags color-secondary">
@@ -256,26 +257,47 @@ $conn->close();
     </div>
 </div>
 </section>
-<section class="upload-section">
+<section class="upload-section" style="background-color: #f2f2f2; padding: 30px; border-radius: 10px;">
     <div class="container mt-sm-5 mt-6">
-        <h2 class="section-title">Upload New Blog Post</h2>
+        <h2 class="section-title" style="color: #333; margin-bottom: 20px;">Upload New Blog Post</h2>
         <form action="upload_post.php" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <label for="title" style="color: #555;">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" style="border: 1px solid #ccc;" required>
             </div>
             <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+                <label for="description" style="color: #555;">Description:</label>
+                <textarea class="form-control" id="description" name="description" rows="5" style="border: 1px solid #ccc;" required></textarea>
             </div>
             <div class="form-group">
-                <label for="picture">Upload Picture:</label>
+                <label for="picture" style="color: #555;">Upload Picture:</label>
                 <input type="file" class="form-control-file" id="picture" name="picture" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Submit</button>
+        </form>
+    </div>
+</section>
+<section class="upload-section">
+    <div class="container mt-sm-5 mt-6">
+        <h2 class="section-title">Upload Favorite Meal</h2>
+        <form action="upload_favorite_meal.php" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Meal Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price (RM):</label>
+                <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" class="form-control-file" id="image" name="image" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </section>
+
     <div class="footer-bottom">
         <div class="container">
             <div class="content">

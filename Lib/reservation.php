@@ -35,90 +35,45 @@ session_start();
 <body>
  
 <div class="main-wrapper">
- 	<header id="header-wrap">
- 		<div class="container">
- 			<div class="row">
-				<nav class="navbar navbar-expand-lg col-md-12">
-				
-					<div class="navbar-brand">
-						<a href="index.php">
-							<img src="images/logo.png">
-						</a>
-					</div>
-
-					<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#slide-navbar-collapse" aria-controls="slide-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"><i class="icon icon-navicon"></i></span>
-					</button>
-
-					<div class="navbar-collapse collapse" id="slide-navbar-collapse">
-						<ul class="navbar-nav light list-inline strong sf-menu">
-							<li class="nav-item active">
-								<a href="index.php" class="nav-link" data-effect="Home">HOME</a>
-							</li>
-							<li class="nav-item">
-								<a href="reservation.html" class="nav-link"
-									data-effect="Reservation">RESERVATION</a>
-							</li>
-							<li class="nav-item">
-								<a href="menu.html" class="nav-link" data-effect="Menu">MENU</a>
-							</li>
-							<li class="dropdown-submenu">
-								<a href="#" data-effect="Blog" class="nav-link" class="dropdown-toggle">BLOG</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item">
-										<a href="blog1.html" class="hvr-sweep-to-right">BLOG 1</a>
-									</li>
-									<li class="nav-item">
-										<a href="blog2.html" class="hvr-sweep-to-right">BLOG 2</a>
-									</li>
-								</ul>
-							</li>
-							<li class="dropdown-submenu">
-								<a href="#" data-effect="Blog" class="nav-link" class="dropdown-toggle">PAGES</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item">
-										<a href="menu.html" class="hvr-sweep-to-right">MENU <span>(pro)</span> </a>
-									</li>
-									<li class="nav-item">
-										<a href="reservation.html" class="hvr-sweep-to-right">RESERVATION <span>(pro)</span> </a>
-									</li>
-									<li class="nav-item">
-										<a href="blog1.html" class="hvr-sweep-to-right">BLOG 1 <span>(pro)</span> </a>
-									</li>
-									<li class="nav-item">
-										<a href="blog2.html" class="hvr-sweep-to-right">BLOG 2 <span>(pro)</span> </a>
-									</li>
-									<li class="nav-item">
-										<a href="single-blog.html" class="hvr-sweep-to-right">SINGLE BLOG <span>(pro)</span> </a>
-									</li>
-								</ul>
-							</li>
-							<li class="nav-item">
-								<a href="https://templatesjungle.gumroad.com/l/hungerhunt-free-responsive-html-css-template" class="nav-link" data-effect="Menu" target="_blank"> <b>GET PRO</b>  </a>
-							</li>
-						</ul>
-
-					</div><!--navbar-collapse-->
-
-					<div class="social-block">	
-						<div class="social-icon">
-							<a href="facebook.com">
-								<i class="icon icon-facebook"></i>
-							</a>
-							<a href="twitter.com">
-								<i class="icon icon-twitter"></i>
-							</a>
-							<a href="instagram.com">
-								<i class="icon icon-instagram"></i>
-							</a>
-						</div>
-					</div>
-
-				</nav>
-				</div><!-- .row -->
-
-			</div>
-		</header>
+<header id="header-wrap">
+            <div class="container">
+                <div class="row">
+                    <nav class="navbar navbar-expand-lg col-md-12">
+                        <div class="navbar-brand">
+                            <a href="index.php">
+                                <img src="images/logo.png">
+                            </a>
+                        </div>
+                        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+                            data-target="#slide-navbar-collapse" aria-controls="slide-navbar-collapse"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"><i class="icon icon-navicon"></i></span>
+                        </button>
+                        <div class="navbar-collapse collapse" id="slide-navbar-collapse">
+                            <ul class="navbar-nav light list-inline strong sf-menu">
+                                <li class="nav-item active">
+                                    <a href="index.php" class="nav-link" data-effect="Home">HOME</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="ublog.php" class="nav-link"
+                                        data-effect="Reservation">RESTAURANTS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="friend.php" class="nav-link" data-effect="Menu">FRIENDS</a>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="rate.php" data-effect="Blog" class="nav-link" class="dropdown-toggle">RATE & REVIEW</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="profile.php" target="_blank" class="nav-link" data-effect="Menu"> <b>PROFILE</b>  </a>
+                                </li>
+                            </ul>
+                        </div>
+                       
+                    </nav>
+                </div>
+            </div>
+        </header>
 
 <div class="page-banner">
 	<div class="text-content bright heading text-center light">
@@ -133,7 +88,7 @@ session_start();
 </div><!--page-banner-->
 
 <section class="online-booking heading text-center mb-5">
-	<div class="footer-bottom">
+	<div class="">
         
 		<h2 class="section-title text-center"><strong>Make Your </strong>online booking</h2>
 		<div class="divider dark mb-4">

@@ -36,7 +36,7 @@ try {
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
         body {
-            background-color: #f4f4f4;
+            background-color: #9C4242;
             font-family: Arial, sans-serif;
             color: black;
         }
@@ -63,11 +63,11 @@ try {
             color: black;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #6BCDEB;
             color: black;
         }
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #1195FA;
             color: black;
         }
         .btn {
@@ -77,12 +77,12 @@ try {
         .btn-primary {
             background-color: #4CAF50;
             border: none;
-            color: white;
+            color: black;
         }
         .btn-danger {
             background-color: #f44336;
             border: none;
-            color: white;
+            color: black;
         }
         .btn-secondary {
             background-color: #555;

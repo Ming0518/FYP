@@ -9,11 +9,20 @@ if (isset($_GET['delete_id'])) {
     $stmt->execute([$delete_id]);
 }
 
+// Update user if edit form is submitted
+if (isset($_POST['edit_id'])) {
+    $edit_id = $_POST['edit_id'];
+    $name = $_POST['name'];
+    $location = $_POST['location'];
+    $description = $_POST['description'];
+    $stmt = $pdo->prepare("UPDATE restaurants SET name = ?, location = ?, description = ? WHERE id = ?");
+    $stmt->execute([$name, $location, $description, $edit_id]);
+}
+
 // Fetch all users from the database
 $stmt = $pdo->query("SELECT * FROM restaurants");
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +117,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Name</th>
                     <th>Location</th>
                     <th>Description</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -120,6 +129,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= $user['description'] ?></td>
                         <td>
                             <button class="btn btn-danger" onclick="confirmDelete(<?= $user['id'] ?>)">Delete</button>
+                            <button class="btn btn-primary" onclick="openEditModal(<?= $user['id'] ?>, '<?= $user['name'] ?>', '<?= $user['location'] ?>', '<?= $user['description'] ?>')">Edit</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -127,14 +137,56 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     </div>
 
-    <!-- JavaScript to handle delete confirmation -->
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Restaurant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" method="POST" action="">
+                        <input type="hidden" name="edit_id" id="edit_id">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle delete confirmation and edit modal -->
     <script>
         function confirmDelete(userId) {
             if (confirm('Are you sure you want to delete this user?')) {
                 window.location.href = `user.php?delete_id=${userId}`;
             }
         }
+
+        function openEditModal(id, name, location, description) {
+            document.getElementById('edit_id').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('location').value = location;
+            document.getElementById('description').value = description;
+            var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+        }
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
 
 </body>
 

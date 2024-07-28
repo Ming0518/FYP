@@ -58,30 +58,27 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <style>
         /* Your CSS styles for the comments page */
-        body {
-    font-family: Arial, sans-serif;
-    background-color: #9EB7E9; /* Change this color to your desired background color */
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        body, html {
+            font-family: Arial, sans-serif;
+            background-color: #9EB7E9; /* Change this color to your desired background color */
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+        }
 
         .container {
             max-width: 1200px;
-            margin: auto;
+            margin: 40px auto; /* Adjust margin for better spacing */
             padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .table {
             width: 100%;
-            background-color: #fff;
             border-collapse: collapse;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .table th,
@@ -118,8 +115,8 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body data-bs-spy="scroll" data-bs-target="#navbar-example2" tabindex="0">
 
     <section id="comments" class="my-5">
-    <div class="container">
-    <button class="btn btn-primary mb-3" onclick="window.location.href = 'admin.php'">Go Back</button>
+        <div class="container">
+            <button class="btn btn-primary mb-3" onclick="window.location.href = 'admin.php'">Go Back</button>
             <h1 class="text-center mb-4">Comments</h1>
             <table class="table">
                 <thead>
@@ -170,10 +167,6 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
-
-    
-
 </body>
 
 </html>
-
